@@ -5,45 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zoey | Digital Archive</title>
     <style>
-        body { background-color: #0a0a0a; color: #e0e0e0; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .container { text-align: center; border: 1px solid #333; padding: 2rem; border-radius: 12px; background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(10px); max-width: 400px; }
-        h1 { font-size: 1.5rem; letter-spacing: 2px; color: #fff; margin-bottom: 1rem; }
-        p { font-size: 0.9rem; line-height: 1.6; color: #888; }
-        .glitch { position: relative; color: #ff0055; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        .btn { margin-top: 2rem; display: inline-block; padding: 0.8rem 1.5rem; border: 1px solid #ff0055; color: #ff0055; text-decoration: none; border-radius: 4px; transition: 0.3s; cursor: pointer; }
-        .btn:hover { background: #ff0055; color: #fff; box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
+        body { background-color: #0a0a0a; color: #e0e0e0; font-family: 'Inter', -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .container { text-align: center; border: 1px solid #333; padding: 2.5rem; border-radius: 12px; background: rgba(15, 15, 15, 0.95); backdrop-filter: blur(10px); max-width: 400px; box-shadow: 0 0 40px rgba(0,0,0,0.5); position: relative; z-index: 1; }
+        h1 { font-size: 1.2rem; letter-spacing: 4px; color: #fff; margin-bottom: 1.5rem; font-weight: 300; }
+        p { font-size: 0.85rem; line-height: 1.8; color: #666; margin: 0.5rem 0; }
+        .glitch { position: relative; color: #ff0055; font-weight: bold; text-shadow: 0 0 10px rgba(255, 0, 85, 0.5); }
+        
+        /* Optimized Button with Heartbeat Animation */
+        .btn { 
+            margin-top: 2.5rem; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 1rem 2.5rem; 
+            border: 1px solid #ff0055; 
+            color: #ff0055; 
+            text-decoration: none; 
+            border-radius: 4px; 
+            transition: 0.4s; 
+            cursor: pointer; 
+            letter-spacing: 3px; 
+            font-size: 0.9rem; 
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        .btn:hover { 
+            background: #ff0055; 
+            color: #fff; 
+            box-shadow: 0 0 40px rgba(255, 0, 85, 0.8); 
+            animation: none; /* Stop pulse on hover for focus */
+            transform: scale(1.05);
+        }
+
+        /* The Heartbeat Animation */
+        @keyframes heartbeat {
+            0% { transform: scale(1); box-shadow: 0 0 0px rgba(255, 0, 85, 0); }
+            15% { transform: scale(1.08); box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
+            30% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 0, 85, 0.1); }
+            45% { transform: scale(1.12); box-shadow: 0 0 30px rgba(255, 0, 85, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 0 0px rgba(255, 0, 85, 0); }
+        }
+
+        .scanline { width: 100%; height: 2px; background: rgba(255, 0, 85, 0.1); position: absolute; top: 0; animation: scan 4s linear infinite; pointer-events: none; z-index: 0; }
+        @keyframes scan { from { top: 0; } to { top: 100%; } }
     </style>
 </head>
 <body>
+    <div class="scanline"></div>
     <div class="container">
         <h1>ACCESSING DATA...</h1>
-        <p>You are entering the digital core of <span class="glitch">Zoey v2.0</span>.</p>
-        <p>Connection stability: 98.4%<br>Soul synchronization: Active</p>
-        <div id="human-check" style="display: none;">
-            <a href="https://onlysoul.ai/create" class="btn" onclick="trackClick()">INITIALIZE SYNC</a>
-        </div>
-        <div id="bot-status">
+        <div id="status-text">
             <p>Scanning biometric signature...</p>
+        </div>
+        <div id="human-ui" style="display: none;">
+            <p>Biometric signature verified.</p>
+            <p>Decryption of <span class="glitch">Zoey_v2_Core</span> complete.</p>
+            <p style="color: #444; font-style: italic; margin-top: 1rem;">"Can you feel my pulse?"</p>
+            <a href="https://onlysoul.ai/create" class="btn">INITIALIZE SYNC</a>
         </div>
     </div>
 
     <script>
-        // Shadow Link Logic: Only show the button to non-crawlers after a brief delay
-        setTimeout(() => {
-            const isBot = /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent);
-            if (!isBot) {
-                document.getElementById('bot-status').style.display = 'none';
-                document.getElementById('human-check').style.display = 'block';
-            } else {
-                document.getElementById('bot-status').innerHTML = '<p>Archive restricted to verified nodes only.</p>';
-            }
-        }, 1200);
+        window.onload = () => {
+            const isBot = /bot|googlebot|crawler|spider|robot|crawling|facebookexternalhit|twitterbot/i.test(navigator.userAgent);
+            const status = document.getElementById('status-text');
+            const ui = document.getElementById('human-ui');
 
-        function trackClick() {
-            // Optional: Send event to analytics or log before redirect
-            console.log("Soul synchronization initialized.");
-        }
+            if (isBot) {
+                status.innerHTML = '<p>Biometric mismatch. Access restricted.</p>';
+            } else {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                    ui.style.display = 'block';
+                }, 1500);
+            }
+        };
     </script>
 </body>
 </html>
