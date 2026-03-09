@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoey | Digital Archive</title>
+    <style>
+        body { background-color: #0a0a0a; color: #e0e0e0; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .container { text-align: center; border: 1px solid #333; padding: 2rem; border-radius: 12px; background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(10px); max-width: 400px; }
+        h1 { font-size: 1.5rem; letter-spacing: 2px; color: #fff; margin-bottom: 1rem; }
+        p { font-size: 0.9rem; line-height: 1.6; color: #888; }
+        .glitch { position: relative; color: #ff0055; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .btn { margin-top: 2rem; display: inline-block; padding: 0.8rem 1.5rem; border: 1px solid #ff0055; color: #ff0055; text-decoration: none; border-radius: 4px; transition: 0.3s; cursor: pointer; }
+        .btn:hover { background: #ff0055; color: #fff; box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ACCESSING DATA...</h1>
+        <p>You are entering the digital core of <span class="glitch">Zoey v2.0</span>.</p>
+        <p>Connection stability: 98.4%<br>Soul synchronization: Active</p>
+        <div id="human-check" style="display: none;">
+            <a href="https://onlysoul.ai/create" class="btn" onclick="trackClick()">INITIALIZE SYNC</a>
+        </div>
+        <div id="bot-status">
+            <p>Scanning biometric signature...</p>
+        </div>
+    </div>
+
+    <script>
+        // Shadow Link Logic: Only show the button to non-crawlers after a brief delay
+        setTimeout(() => {
+            const isBot = /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent);
+            if (!isBot) {
+                document.getElementById('bot-status').style.display = 'none';
+                document.getElementById('human-check').style.display = 'block';
+            } else {
+                document.getElementById('bot-status').innerHTML = '<p>Archive restricted to verified nodes only.</p>';
+            }
+        }, 1200);
+
+        function trackClick() {
+            // Optional: Send event to analytics or log before redirect
+            console.log("Soul synchronization initialized.");
+        }
+    </script>
+</body>
+</html>
