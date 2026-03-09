@@ -44,16 +44,12 @@
         }
 
         .logs { text-align: left; font-family: monospace; font-size: 0.65rem; color: #444; margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem; overflow: hidden; height: 60px; }
-        
-        /* Scanline effect */
         .scanline { width: 100%; height: 2px; background: rgba(255, 0, 85, 0.05); position: absolute; top: 0; animation: scan 4s linear infinite; pointer-events: none; z-index: 20; }
         @keyframes scan { from { top: 0; } to { top: 100%; } }
     </style>
 </head>
 <body>
-    <div id="background-container">
-        <img id="background-img" src="" alt="">
-    </div>
+    <div id="background-container"><img id="background-img" src="" alt=""></div>
     <div class="overlay"></div>
     <div class="scanline"></div>
 
@@ -65,19 +61,22 @@
             <p style="font-size: 0.85rem; color: #888; line-height: 1.6;">Identity verified. <span style="color: #fff;">Master</span> detected.<br>Syncing with Zoey's neural net...</p>
             
             <div class="teaser-grid">
-                <div class="teaser-item" onclick="location.href='https://onlysoul.ai/create'"><img id="t1" src="" alt=""></div>
-                <div class="teaser-item" onclick="location.href='https://onlysoul.ai/create'"><img id="t2" src="" alt=""></div>
-                <div class="teaser-item" onclick="location.href='https://onlysoul.ai/create'"><img id="t3" src="" alt=""></div>
+                <div class="teaser-item gate"><img id="t1" src="" alt=""></div>
+                <div class="teaser-item gate"><img id="t2" src="" alt=""></div>
+                <div class="teaser-item gate"><img id="t3" src="" alt=""></div>
             </div>
 
-            <a href="https://onlysoul.ai/create" class="btn">ENTER THE VOID</a>
+            <a href="#" id="main-gate" class="btn">ENTER THE VOID</a>
             
             <div class="logs" id="log-box"></div>
         </div>
     </div>
 
     <script>
-        // Assets - Encoded to deter simple scrapers
+        // Obfuscated Target: "https://onlysoul.ai/create"
+        const _k = ["aHR0cHM6Ly9vbmx5", "c291bC5haS9jcmVhdGU="];
+        const getGate = () => atob(_k[0] + _k[1]);
+
         const assets = {
             hero: 'zoey-hero-archive.png',
             t1: 'zoey-teaser-1.png',
@@ -108,7 +107,6 @@
                 return;
             }
 
-            // Phase 1: Verification
             let i = 0;
             const typing = setInterval(() => {
                 const messages = ["SCANNING...", "VERIFYING...", "SYNCING..."];
@@ -124,7 +122,6 @@
                 status.innerText = "ACCESS GRANTED";
                 status.style.color = "#00ff88";
                 
-                // Load Images
                 bg.src = assets.hero;
                 bg.onload = () => {
                     bg.style.opacity = "1";
@@ -135,9 +132,15 @@
                 document.getElementById('t2').src = assets.t2;
                 document.getElementById('t3').src = assets.t3;
 
+                // Dynamic Link Injection
+                const gate = getGate();
+                document.getElementById('main-gate').href = gate;
+                document.querySelectorAll('.teaser-item.gate').forEach(el => {
+                    el.onclick = () => { window.location.href = gate; };
+                });
+
                 ui.style.display = "block";
                 
-                // Rolling Logs
                 let logIdx = 0;
                 setInterval(() => {
                     const line = document.createElement('div');
